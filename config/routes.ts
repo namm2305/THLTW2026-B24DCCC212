@@ -1,4 +1,6 @@
-﻿export default [
+﻿import path from "path";
+
+export default [
 	{
 		path: '/user',
 		layout: false,
@@ -43,19 +45,19 @@
 		component: './TodoList',
 	},
 
-	// DANH MUC HE THONG
-	// {
-	// 	name: 'DanhMuc',
-	// 	path: '/danh-muc',
-	// 	icon: 'copy',
-	// 	routes: [
-	// 		{
-	// 			name: 'ChucVu',
-	// 			path: 'chuc-vu',
-	// 			component: './DanhMuc/ChucVu',
-	// 		},
-	// 	],
-	// },
+	{
+  	path: '/oan-tu-ti',
+  	name: 'Oẳn Tù Tì',
+	icon: 'ScissorOutlined',
+  	component: './OanTuTi',
+	
+	},
+	{
+		path: '/quan-ly-cau-hoi',
+		name: 'Quản lý câu hỏi',
+		icon: 'QuestionOutlined',
+		component: './QuanLyCauHoi',
+	},
 
 	{
 		path: '/notification',
