@@ -35,7 +35,7 @@ export default function Home() {
             { key: 'dichvu', label: 'Dịch vụ' },
             { key: 'nhanvien', label: 'Nhân viên' },
             { key: 'lichhen', label: 'Lịch hẹn' },
-            { key: 'danhgia', label: 'Đánh giá' },
+            { key: 'danhgia', label: 'Đánh giá nhân viên' },
             { key: 'thongke', label: 'Thống kê' },
           ]}
         />

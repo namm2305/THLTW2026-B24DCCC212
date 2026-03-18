@@ -49,7 +49,7 @@ export function ThongKe() {
           <Col xs={24} sm={12} md={6}>
             <Card style={{ borderRadius: 6, border: '1px solid #eb2f9620', background: '#eb2f9608', textAlign: 'center' }}>
               <Statistic
-                title="Đánh giá"
+                title="Đánh giá nhân viên"
                 value={avgRating}
                 suffix="⭐"
                 valueStyle={{ color: '#eb2f96' }}
