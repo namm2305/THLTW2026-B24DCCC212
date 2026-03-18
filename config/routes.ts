@@ -1,4 +1,6 @@
-﻿export default [
+﻿import path from "path";
+
+export default [
 	{
 		path: '/user',
 		layout: false,
@@ -43,6 +45,14 @@
 		component: './TodoList',
 	},
 
+
+	
+	{
+		path: '/quan-ly-dich-vu',
+		name: 'Quản lý dịch vụ',
+		icon: 'AppstoreOutlined',
+		component: './QuanLyDichVu',
+	},
 	// DANH MUC HE THONG
 	// {
 	// 	name: 'DanhMuc',
