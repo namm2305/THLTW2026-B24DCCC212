@@ -42,7 +42,12 @@
 		icon: 'OrderedListOutlined',
 		component: './TodoList',
 	},
-
+	{
+		path: '/club-management',
+		name: 'Quản lý CLB',
+		icon: 'TeamOutlined',
+		component: './club-management',
+	},
 	// DANH MUC HE THONG
 	// {
 	// 	name: 'DanhMuc',
