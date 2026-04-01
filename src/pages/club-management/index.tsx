@@ -12,14 +12,26 @@ const { TabPane } = Tabs;
 export interface Club {
   id: number;
   name: string;
+  avatar?: string;
+  establishedDate?: string;
+  description?: string;
+  leader?: string;
+  active: boolean;
 }
 
 export interface Application {
   id: number;
   name: string;
+  email?: string;
+  phone?: string;
+  gender?: 'Nam' | 'Nữ';
+  address?: string;
+  skills?: string;
   clubId: number;
-  status: 'Pending' | 'Approved' | 'Rejected';
   reason?: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  note?: string;
+  createdAt?: string;
 }
 
 export interface History {
@@ -27,13 +39,14 @@ export interface History {
   action: string;
   time: string;
   reason?: string;
+  applicationId: number;
 }
 
 function App() {
-  const [clubs, setClubs] = useState<Club[]>(([
-    { id: 1, name: 'IT Club' },
-    { id: 2, name: 'Music Club' }
-  ]));
+  const [clubs, setClubs] = useState<Club[]>([
+    { id: 1, name: 'IT Club', avatar: '', establishedDate: '2020-01-01', description: '<p>CLB Công nghệ Thông tin</p>', leader: 'Nguyễn Văn A', active: true },
+    { id: 2, name: 'Music Club', avatar: '', establishedDate: '2019-05-10', description: '<p>CLB Âm nhạc</p>', leader: 'Trần Thị B', active: true }
+  ]);
 
   const [applications, setApplications] = useState<Application[]>([]);
   const [history, setHistory] = useState<History[]>([]);

@@ -3,24 +3,24 @@ import { useState } from 'react';
 
 export default function ClubTable({ clubs, setClubs }: any) {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
+  const [form, setForm] = useState<any>({ active: true });
   const [search, setSearch] = useState('');
   const [editing, setEditing] = useState<any>(null);
 
   const addClub = () => {
-    if (!name) return;
+    if (!form.name) return alert('Nhập tên CLB!');
 
     if (editing) {
       setClubs(clubs.map((c: any) =>
-        c.id === editing.id ? { ...c, name } : c
+        c.id === editing.id ? { ...c, ...form } : c
       ));
       setEditing(null);
     } else {
-      setClubs([...clubs, { id: Date.now(), name }]);
+      setClubs([...clubs, { id: Date.now(), ...form }]);
     }
 
     setOpen(false);
-    setName('');
+    setForm({ active: true });
   };
 
   const filtered = clubs.filter((c: any) =>
@@ -44,10 +44,32 @@ export default function ClubTable({ clubs, setClubs }: any) {
         dataSource={filtered}
         columns={[
           {
+            title: 'Ảnh đại diện',
+            dataIndex: 'avatar',
+            render: (avatar: string) => avatar ? <img src={avatar} alt="Avatar" style={{ width: 50, height: 50 }} /> : 'N/A'
+          },
+          {
             title: 'Tên CLB',
             dataIndex: 'name',
-            sorter: (a: any, b: any) =>
-              a.name.localeCompare(b.name)
+            sorter: (a: any, b: any) => a.name.localeCompare(b.name)
+          },
+          {
+            title: 'Ngày thành lập',
+            dataIndex: 'establishedDate'
+          },
+          {
+            title: 'Mô tả',
+            dataIndex: 'description',
+            render: (desc: string) => <div dangerouslySetInnerHTML={{ __html: desc }} />
+          },
+          {
+            title: 'Chủ nhiệm',
+            dataIndex: 'leader'
+          },
+          {
+            title: 'Hoạt động',
+            dataIndex: 'active',
+            render: (active: boolean) => active ? 'Có' : 'Không'
           },
           {
             title: 'Thao tác',
@@ -55,16 +77,18 @@ export default function ClubTable({ clubs, setClubs }: any) {
               <>
                 <Button onClick={() => {
                   setEditing(r);
-                  setName(r.name);
+                  setForm(r);
                   setOpen(true);
                 }}>
                   Sửa
                 </Button>
-
                 <Button danger onClick={() =>
                   setClubs(clubs.filter((c: any) => c.id !== r.id))
                 }>
                   Xóa
+                </Button>
+                <Button onClick={() => alert('Xem thành viên')}>
+                  Xem thành viên
                 </Button>
               </>
             )
@@ -72,10 +96,35 @@ export default function ClubTable({ clubs, setClubs }: any) {
         ]}
       />
 
-      <Modal visible={open} onOk={addClub} onCancel={() => setOpen(false)}>
+      <Modal visible={open} onOk={addClub} onCancel={() => { setOpen(false); setForm({ active: true }); setEditing(null); }}>
         <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder='Tên CLB'
+          value={form.name || ''}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+        />
+        <Input
+          placeholder='Ảnh đại diện (URL)'
+          value={form.avatar || ''}
+          onChange={(e) => setForm({ ...form, avatar: e.target.value })}
+          style={{ marginTop: 10 }}
+        />
+        <Input
+          placeholder='Ngày thành lập (YYYY-MM-DD)'
+          value={form.establishedDate || ''}
+          onChange={(e) => setForm({ ...form, establishedDate: e.target.value })}
+          style={{ marginTop: 10 }}
+        />
+        <Input.TextArea
+          placeholder='Mô tả'
+          value={form.description || ''}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
+          style={{ marginTop: 10 }}
+        />
+        <Input
+          placeholder='Chủ nhiệm'
+          value={form.leader || ''}
+          onChange={(e) => setForm({ ...form, leader: e.target.value })}
+          style={{ marginTop: 10 }}
         />
       </Modal>
     </Card>
