@@ -42,6 +42,12 @@
 		icon: 'OrderedListOutlined',
 		component: './TodoList',
 	},
+	{
+		path: '/Quan-Ly-Phong-Hoc',
+		name: 'Quản lý phòng học',
+		icon: 'BankOutlined',
+		component: './QuanLyPhongHoc',
+	},
 
 	// DANH MUC HE THONG
 	// {

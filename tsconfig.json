@@ -9,7 +9,7 @@
 		"jsx": "react-jsx",
 		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitReturns": true,
 		"noUnusedLocals": true,
@@ -17,6 +17,7 @@
 		"skipLibCheck": true,
 		"experimentalDecorators": true,
 		"strict": true,
+		"ignoreDeprecations": "6.0",
 		"paths": {
 			"@/*": ["./src/*"],
 			"@@/*": ["./src/.umi/*"],
