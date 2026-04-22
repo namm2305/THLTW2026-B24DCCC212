@@ -1,84 +1,51 @@
-import { useState } from "react";
+import { Form, Input, Button } from "antd";
 
 function FormPost({ onSubmit }: any) {
-  const [form, setForm] = useState({
-    title: "",
-    summary: "",
-    content: "",
-    image: "",
-    tags: "",
-    author: "",
-    status: "published"
-  });
+  const [form] = Form.useForm();
 
-  const handleSubmit = () => {
-    if (!form.title) return alert("Nhập tiêu đề");
-
+  const handleFinish = (values: any) => {
     onSubmit({
       id: Date.now(),
-      title: form.title,
-      summary: form.summary,
-      content: form.content,
-      image: form.image || "https://via.placeholder.com/300",
-      tags: form.tags.split(",").map(t => t.trim()),
-      author: form.author || "Admin",
-      createdAt: new Date().toISOString(),
+      ...values,
+      tags: values.tags.split(","),
       views: 0,
-      status: form.status
-    });
-
-    setForm({
-      title: "",
-      summary: "",
-      content: "",
-      image: "",
-      tags: "",
-      author: "",
+      createdAt: new Date().toISOString(),
       status: "published"
     });
+
+    form.resetFields();
   };
 
   return (
-    <div style={{
-      border: "1px solid #ddd",
-      padding: 16,
-      marginBottom: 20,
-      borderRadius: 8
-    }}>
-      <h3>Thêm bài viết</h3>
+    <Form form={form} onFinish={handleFinish} layout="vertical">
+      <Form.Item name="title" label="Tiêu đề" rules={[{ required: true }]}>
+        <Input />
+      </Form.Item>
 
-      <input placeholder="Tiêu đề"
-        value={form.title}
-        onChange={(e) => setForm({ ...form, title: e.target.value })}
-      />
+      <Form.Item name="summary" label="Mô tả">
+        <Input />
+      </Form.Item>
 
-      <input placeholder="Mô tả"
-        value={form.summary}
-        onChange={(e) => setForm({ ...form, summary: e.target.value })}
-      />
+      <Form.Item name="image" label="Ảnh URL">
+        <Input />
+      </Form.Item>
 
-      <input placeholder="Ảnh URL"
-        value={form.image}
-        onChange={(e) => setForm({ ...form, image: e.target.value })}
-      />
+      <Form.Item name="tags" label="Tags">
+        <Input placeholder="react, js" />
+      </Form.Item>
 
-      <input placeholder="Tags (react, js)"
-        value={form.tags}
-        onChange={(e) => setForm({ ...form, tags: e.target.value })}
-      />
+      <Form.Item name="author" label="Tác giả">
+        <Input />
+      </Form.Item>
 
-      <input placeholder="Tác giả"
-        value={form.author}
-        onChange={(e) => setForm({ ...form, author: e.target.value })}
-      />
+      <Form.Item name="content" label="Nội dung">
+        <Input.TextArea rows={4} />
+      </Form.Item>
 
-      <textarea placeholder="Nội dung"
-        value={form.content}
-        onChange={(e) => setForm({ ...form, content: e.target.value })}
-      />
-
-      <button onClick={handleSubmit}>➕ Thêm bài</button>
-    </div>
+      <Button type="primary" htmlType="submit">
+        Thêm bài
+      </Button>
+    </Form>
   );
 }
 

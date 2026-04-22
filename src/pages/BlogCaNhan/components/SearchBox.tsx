@@ -1,3 +1,4 @@
+import { Input } from "antd";
 import { useEffect, useState } from "react";
 
 function SearchBox({ value, onChange }: any) {
@@ -8,7 +9,14 @@ function SearchBox({ value, onChange }: any) {
     return () => clearTimeout(t);
   }, [v]);
 
-  return <input value={v} onChange={(e) => setV(e.target.value)} />;
+  return (
+    <Input.Search
+      placeholder="Tìm kiếm bài viết..."
+      value={v}
+      onChange={(e) => setV(e.target.value)}
+      style={{ marginBottom: 20 }}
+    />
+  );
 }
 
 export default SearchBox;

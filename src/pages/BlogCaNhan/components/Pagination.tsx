@@ -1,15 +1,15 @@
-function Pagination({ total, pageSize, current, onChange }: any) {
-  const totalPage = Math.ceil(total / pageSize);
+import { Pagination } from "antd";
 
+function Paging({ total, pageSize, current, onChange }: any) {
   return (
-    <div>
-      {Array.from({ length: totalPage }).map((_, i) => (
-        <button key={i} onClick={() => onChange(i + 1)}>
-          {i + 1}
-        </button>
-      ))}
-    </div>
+    <Pagination
+      current={current}
+      total={total}
+      pageSize={pageSize}
+      onChange={onChange}
+      style={{ marginTop: 20, textAlign: "center" }}
+    />
   );
 }
 
-export default Pagination;
+export default Paging;

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Row, Col, Table, Button, Input } from "antd";
+
 import PostCard from "./components/PostCard";
 import SearchBox from "./components/SearchBox";
 import Pagination from "./components/Pagination";
@@ -6,7 +8,6 @@ import FormPost from "./components/Form";
 import SelectStatus from "./components/Select";
 import Detail from "./Detail";
 
-// ================= TYPE =================
 export interface Post {
   id: number;
   title: string;
@@ -22,7 +23,6 @@ export interface Post {
 
 type Page = "home" | "detail" | "admin" | "tags" | "about";
 
-// ================= MAIN =================
 function BlogPage() {
   const [page, setPage] = useState<Page>("home");
   const [posts, setPosts] = useState<Post[]>([]);
@@ -35,7 +35,6 @@ function BlogPage() {
 
   const pageSize = 9;
 
-  
   const filteredPosts = posts.filter(
     (p) =>
       p.title.toLowerCase().includes(keyword.toLowerCase()) &&
@@ -49,37 +48,34 @@ function BlogPage() {
 
   const renderHome = () => (
     <div>
-      <h1> Trang chủ</h1>
+      <h1>Trang chủ</h1>
 
       <SearchBox value={keyword} onChange={setKeyword} />
 
       {tagFilter && (
         <p>
-           Đang lọc theo tag: <b>{tagFilter}</b>
-          <button onClick={() => setTagFilter("")}>X</button>
+          Tag: <b>{tagFilter}</b>{" "}
+          <Button size="small" onClick={() => setTagFilter("")}>
+            X
+          </Button>
         </p>
       )}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(250px,1fr))",
-          gap: 16,
-        }}
-      >
+      <Row gutter={[16, 16]}>
         {paginatedPosts.map((p) => (
-          <div
-            key={p.id}
-            onClick={() => {
-              p.views += 1;
-              setSelected(p);
-              setPage("detail");
-            }}
-          >
-            <PostCard post={p} onTagClick={setTagFilter} />
-          </div>
+          <Col xs={24} sm={12} md={8} key={p.id}>
+            <div
+              onClick={() => {
+                p.views += 1;
+                setSelected(p);
+                setPage("detail");
+              }}
+            >
+              <PostCard post={p} onTagClick={setTagFilter} />
+            </div>
+          </Col>
         ))}
-      </div>
+      </Row>
 
       <Pagination
         total={filteredPosts.length}
@@ -90,20 +86,6 @@ function BlogPage() {
     </div>
   );
 
-  
-  const renderDetail = () => {
-    if (!selected) return null;
-
-    return (
-      <Detail
-        post={selected}
-        posts={posts}
-        onBack={() => setPage("home")}
-      />
-    );
-  };
-
-  
   const renderAdmin = () => {
     const data = posts.filter(
       (p) =>
@@ -111,12 +93,43 @@ function BlogPage() {
         (statusFilter ? p.status === statusFilter : true)
     );
 
+    const columns = [
+      { title: "Tiêu đề", dataIndex: "title" },
+      { title: "Trạng thái", dataIndex: "status" },
+      {
+        title: "Thẻ",
+        render: (p: Post) => p.tags.join(", "),
+      },
+      { title: "Lượt xem", dataIndex: "views" },
+      {
+        title: "Ngày",
+        render: (p: Post) =>
+          new Date(p.createdAt).toLocaleDateString(),
+      },
+      {
+        title: "Action",
+        render: (p: Post) => (
+          <Button
+            danger
+            onClick={() =>
+              setPosts((prev) =>
+                prev.filter((x) => x.id !== p.id)
+              )
+            }
+          >
+            Xóa
+          </Button>
+        ),
+      },
+    ];
+
     return (
       <div>
-        <h1> Quản lý bài viết</h1>
+        <h1>Quản lý bài viết</h1>
 
-        <input
+        <Input
           placeholder="Tìm tiêu đề..."
+          style={{ marginBottom: 10 }}
           onChange={(e) => setKeyword(e.target.value)}
         />
 
@@ -128,46 +141,16 @@ function BlogPage() {
           }
         />
 
-        <table border={1} width="100%" style={{ marginTop: 20 }}>
-          <thead>
-            <tr>
-              <th>Tiêu đề</th>
-              <th>Trạng thái</th>
-              <th>Thẻ</th>
-              <th>Lượt xem</th>
-              <th>Ngày</th>
-              <th></th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {data.map((p) => (
-              <tr key={p.id}>
-                <td>{p.title}</td>
-                <td>{p.status}</td>
-                <td>{p.tags.join(", ")}</td>
-                <td>{p.views}</td>
-                <td>{new Date(p.createdAt).toLocaleDateString()}</td>
-                <td>
-                  <button
-                    onClick={() =>
-                      setPosts((prev) =>
-                        prev.filter((x) => x.id !== p.id)
-                      )
-                    }
-                  >
-                     Xóa
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table
+          dataSource={data}
+          columns={columns}
+          rowKey="id"
+          style={{ marginTop: 20 }}
+        />
       </div>
     );
   };
 
-  // ================= TAG =================
   const renderTags = () => {
     const tags = Array.from(
       new Set(posts.flatMap((p) => p.tags))
@@ -175,46 +158,49 @@ function BlogPage() {
 
     return (
       <div>
-        <h1> Tags</h1>
+        <h1>Tags</h1>
 
         {tags.map((t) => (
-          <div
+          <Button
             key={t}
-            style={{ cursor: "pointer" }}
+            style={{ marginRight: 8, marginBottom: 8 }}
             onClick={() => {
               setTagFilter(t);
               setPage("home");
             }}
           >
             #{t}
-          </div>
+          </Button>
         ))}
       </div>
     );
   };
 
-  // ================= ABOUT =================
   const renderAbout = () => (
     <div>
-      <h1> Giới thiệu</h1>
-     
+      <h1>Giới thiệu</h1>
+      <p>Tạ Nam</p>
       <p>React Developer</p>
-      
     </div>
   );
 
-  
   return (
     <div style={{ padding: 20 }}>
-      <nav style={{ marginBottom: 20 }}>
-        <button onClick={() => setPage("home")}>Home</button>
-        <button onClick={() => setPage("admin")}>Admin</button>
-        <button onClick={() => setPage("tags")}>Tags</button>
-        <button onClick={() => setPage("about")}>About</button>
-      </nav>
+      <div style={{ marginBottom: 20 }}>
+        <Button onClick={() => setPage("home")}>Home</Button>
+        <Button onClick={() => setPage("admin")}>Admin</Button>
+        <Button onClick={() => setPage("tags")}>Tags</Button>
+        <Button onClick={() => setPage("about")}>About</Button>
+      </div>
 
       {page === "home" && renderHome()}
-      {page === "detail" && renderDetail()}
+      {page === "detail" && selected && (
+        <Detail
+          post={selected}
+          posts={posts}
+          onBack={() => setPage("home")}
+        />
+      )}
       {page === "admin" && renderAdmin()}
       {page === "tags" && renderTags()}
       {page === "about" && renderAbout()}

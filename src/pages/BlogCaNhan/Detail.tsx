@@ -1,3 +1,5 @@
+import { Button, Tag } from "antd";
+
 function Detail({ post, posts, onBack }: any) {
   const related = posts.filter(
     (p: any) =>
@@ -7,19 +9,31 @@ function Detail({ post, posts, onBack }: any) {
 
   return (
     <div style={{ maxWidth: 800, margin: "auto" }}>
-      <button onClick={onBack}>⬅ Quay lại</button>
+      <Button onClick={onBack}>Quay lại</Button>
 
       <h1>{post.title}</h1>
 
       <p>
-        👤 {post.author} | 📅 {new Date(post.createdAt).toLocaleDateString()} | 👁 {post.views}
+        {post.author} |{" "}
+        {new Date(post.createdAt).toLocaleDateString()} |{" "}
+        {post.views}
       </p>
 
       <img src={post.image} width="100%" />
 
-      <div dangerouslySetInnerHTML={{ __html: post.content }} />
+      <div style={{ marginTop: 10 }}>
+        {post.tags.map((t: string) => (
+          <Tag key={t}>{t}</Tag>
+        ))}
+      </div>
 
-      <h3>Bài viết liên quan</h3>
+      <div
+        style={{ marginTop: 20 }}
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
+
+      <h3 style={{ marginTop: 30 }}>Bài viết liên quan</h3>
+
       {related.map((p: any) => (
         <div key={p.id}>{p.title}</div>
       ))}

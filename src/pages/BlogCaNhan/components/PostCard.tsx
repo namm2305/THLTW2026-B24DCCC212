@@ -1,41 +1,35 @@
+import { Card, Tag } from "antd";
+
+const { Meta } = Card;
+
 function PostCard({ post, onTagClick }: any) {
   return (
-    <div style={{
-      border: "1px solid #ddd",
-      borderRadius: 8,
-      padding: 12,
-      cursor: "pointer"
-    }}>
-      <img src={post.image} width="100%" style={{ borderRadius: 6 }} />
+    <Card
+      hoverable
+      cover={<img src={post.image} />}
+      style={{ borderRadius: 10 }}
+    >
+      <Meta
+        title={post.title}
+        description={post.summary}
+      />
 
-      <h3>{post.title}</h3>
-      <p>{post.summary}</p>
-
-      <small>
-        {post.author} • {new Date(post.createdAt).toLocaleDateString()}
-      </small>
-
-      <div style={{ marginTop: 8 }}>
+      <div style={{ marginTop: 10 }}>
         {post.tags.map((t: string) => (
-          <span
+          <Tag
             key={t}
+            color="blue"
             onClick={(e) => {
               e.stopPropagation();
               onTagClick(t);
             }}
-            style={{
-              marginRight: 6,
-              padding: "2px 6px",
-              background: "#eee",
-              borderRadius: 4,
-              cursor: "pointer"
-            }}
+            style={{ cursor: "pointer" }}
           >
             #{t}
-          </span>
+          </Tag>
         ))}
       </div>
-    </div>
+    </Card>
   );
 }
 
