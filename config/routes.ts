@@ -1,4 +1,5 @@
-﻿export default [
+﻿
+export default [
 	{
 		path: '/user',
 		layout: false,
@@ -42,6 +43,12 @@
 		icon: 'OrderedListOutlined',
 		component: './TodoList',
 	},
+	{
+		path: '/blog-ca-nhan',
+		name: 'BlogCaNhan',
+		icon: 'ReadOutlined',
+		component: './BlogCaNhan',
+ 	},
 
 	// DANH MUC HE THONG
 	// {
