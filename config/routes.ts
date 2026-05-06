@@ -1,4 +1,6 @@
-﻿export default [
+﻿import path from "path";
+
+export default [
 	{
 		path: '/user',
 		layout: false,
@@ -41,6 +43,12 @@
 		name: 'TodoList',
 		icon: 'OrderedListOutlined',
 		component: './TodoList',
+	},
+	{
+		path: '/task',
+		name: 'Task',
+		icon: 'CheckSquareOutlined',
+		component: './Task',
 	},
 
 	// DANH MUC HE THONG
